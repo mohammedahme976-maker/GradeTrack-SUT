@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GradeTrack —SUT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <div id="auth-overlay" class="auth-overlay">
+        <div class="auth-card">
+            <div class="auth-brand">
+                <span class="brand-icon">◈</span>
+                <h1>GradeTrack</h1>
+                <p>Your academic progress, visualized.</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Sign In</button>
+                <button class="auth-tab" data-tab="register">Register</button>
+            </div>
+
+            <form id="login-form" class="auth-form" novalidate>
+                <div class="form-group">
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" name="username" placeholder="Enter your username" required />
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="password" placeholder="••••••••" required />
+                </div>
+                <div id="login-error" class="form-error hidden"></div>
+                <button type="submit" class="btn-primary btn-full">
+                    <span class="btn-text">Sign In</span>
+                    <span class="btn-loader hidden">…</span>
+                </button>
+            </form>
+
+            <form id="register-form" class="auth-form hidden" novalidate>
+                <div class="form-group">
+                    <label for="reg-fullname">Full Name</label>
+                    <input type="text" id="reg-fullname" name="fullname" placeholder="e.g. Ahmed Said" required />
+                </div>
+                <div class="form-group">
+                    <label for="reg-username">Username</label>
+                    <input type="text" id="reg-username" name="username" placeholder="Choose a username" required />
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" name="password" placeholder="At least 6 characters"
+                        required />
+                </div>
+                <div id="register-error" class="form-error hidden"></div>
+                <button type="submit" class="btn-primary btn-full">
+                    <span class="btn-text">Create Account</span>
+                    <span class="btn-loader hidden">…</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="app" class="app hidden">
+
+        <header class="top-nav">
+            <div class="nav-brand">
+                <span class="brand-icon">◈</span>
+                <span class="brand-name">GradeTrack</span>
+            </div>
+
+            <nav class="nav-filters" aria-label="Filter grades">
+                <span class="nav-label">View:</span>
+                <button class="nav-filter active" data-filter="all">All Subjects</button>
+                <div id="subject-filters" class="subject-filters"></div>
+            </nav>
+
+            <div class="nav-user">
+                <span id="user-greeting" class="user-greeting"></span>
+                <button id="logout-btn" class="btn-outline">Sign Out</button>
+            </div>
+        </header>
+
+        <div class="dashboard">
+
+            <main class="grade-main">
+
+                <blockquote id="gpa-banner" class="gpa-banner">
+                    <span class="gpa-label">Overall Average</span>
+                    <strong id="gpa-value" class="gpa-value">—</strong>
+                    <span id="gpa-letter" class="gpa-letter">—</span>
+                    <span id="gpa-count" class="gpa-count">0 assessments</span>
+                </blockquote>
+
+                <section class="add-grade-section">
+                    <h2 class="section-title">Add New Grade</h2>
+                    <form id="add-grade-form" class="add-grade-form" novalidate>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="f-subject">Subject</label>
+                                <input type="text" id="f-subject" name="subject" placeholder="e.g. Mathematics"
+                                    required />
+                            </div>
+                            <div class="form-group">
+                                <label for="f-assessment">Assessment Name</label>
+                                <input type="text" id="f-assessment" name="assessment" placeholder="e.g. Midterm Exam"
+                                    required />
+                            </div>
+                            <div class="form-group form-group--small">
+                                <label for="f-mark">Mark</label>
+                                <input type="number" id="f-mark" name="mark" min="0" placeholder="85" required />
+                            </div>
+                            <div class="form-group form-group--small">
+                                <label for="f-total">Out of</label>
+                                <input type="number" id="f-total" name="total" min="1" placeholder="100" required />
+                            </div>
+                            <div class="form-group form-group--small">
+                                <label for="f-semester">Semester</label>
+                                <select id="f-semester" name="semester">
+                                    <option value="1">Semester 1</option>
+                                    <option value="2">Semester 2</option>
+                                    <option value="3">Semester 3</option>
+                                    <option value="4">Semester 4</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="add-error" class="form-error hidden"></div>
+                        <button type="submit" class="btn-primary">
+                            <span class="btn-text">+ Add Grade</span>
+                            <span class="btn-loader hidden">…</span>
+                        </button>
+                    </form>
+                </section>
+
+                <section class="table-section">
+                    <div class="table-header">
+                        <h2 class="section-title">Grade Records</h2>
+                        <div class="table-controls">
+                            <input type="search" id="search-input" placeholder="Search assessments…"
+                                class="search-input" />
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table id="grades-table" class="grades-table">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" data-col="subject">Subject <span class="sort-arrow">↕</span>
+                                    </th>
+                                    <th class="sortable" data-col="assessment_name">Assessment <span
+                                            class="sort-arrow">↕</span></th>
+                                    <th class="sortable" data-col="semester">Sem <span class="sort-arrow">↕</span></th>
+                                    <th class="sortable" data-col="percentage">% <span class="sort-arrow">↕</span></th>
+                                    <th>Mark</th>
+                                    <th>Grade</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="grades-tbody">
+
+                            </tbody>
+                        </table>
+                        <div id="empty-state" class="empty-state hidden">
+                            <p>◈ No grades yet. Add your first entry above.</p>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <aside class="subject-sidebar">
+                <h2 class="sidebar-title">Subject Summary</h2>
+                <div id="subject-cards" class="subject-cards">
+
+                </div>
+
+                <div class="sidebar-semester-filter">
+                    <label for="sem-select" class="sidebar-label">Filter by Semester</label>
+                    <select id="sem-select" class="sem-select">
+                        <option value="all">All Semesters</option>
+                        <option value="1">Semester 1</option>
+                        <option value="2">Semester 2</option>
+                        <option value="3">Semester 3</option>
+                        <option value="4">Semester 4</option>
+                    </select>
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <div id="edit-modal" class="modal hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-box">
+            <h3 class="modal-title">Edit Grade</h3>
+            <form id="edit-grade-form" novalidate>
+                <input type="hidden" id="edit-id" name="id" />
+                <div class="form-group">
+                    <label for="edit-subject">Subject</label>
+                    <input type="text" id="edit-subject" name="subject" required />
+                </div>
+                <div class="form-group">
+                    <label for="edit-assessment">Assessment</label>
+                    <input type="text" id="edit-assessment" name="assessment" required />
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-mark">Mark</label>
+                        <input type="number" id="edit-mark" name="mark" min="0" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-total">Out of</label>
+                        <input type="number" id="edit-total" name="total" min="1" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-semester">Semester</label>
+                        <select id="edit-semester" name="semester">
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
+                            <option value="3">Semester 3</option>
+                            <option value="4">Semester 4</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="edit-error" class="form-error hidden"></div>
+                <div class="modal-actions">
+                    <button type="button" id="cancel-edit" class="btn-outline">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
